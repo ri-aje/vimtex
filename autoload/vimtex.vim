@@ -234,30 +234,30 @@ function! s:init_default_mappings() abort " {{{1
   endif
 
   if g:vimtex_text_obj_enabled
-    call s:map(0, 'x', 'id', '<plug>(vimtex-id)')
+    call s:map(0, 'x', 'ud', '<plug>(vimtex-id)')
     call s:map(0, 'x', 'ad', '<plug>(vimtex-ad)')
-    call s:map(0, 'o', 'id', '<plug>(vimtex-id)')
+    call s:map(0, 'o', 'ud', '<plug>(vimtex-id)')
     call s:map(0, 'o', 'ad', '<plug>(vimtex-ad)')
-    call s:map(0, 'x', 'i$', '<plug>(vimtex-i$)')
+    call s:map(0, 'x', 'u$', '<plug>(vimtex-i$)')
     call s:map(0, 'x', 'a$', '<plug>(vimtex-a$)')
-    call s:map(0, 'o', 'i$', '<plug>(vimtex-i$)')
+    call s:map(0, 'o', 'u$', '<plug>(vimtex-i$)')
     call s:map(0, 'o', 'a$', '<plug>(vimtex-a$)')
-    call s:map(1, 'x', 'iP', '<plug>(vimtex-iP)')
+    call s:map(1, 'x', 'uP', '<plug>(vimtex-iP)')
     call s:map(1, 'x', 'aP', '<plug>(vimtex-aP)')
-    call s:map(1, 'o', 'iP', '<plug>(vimtex-iP)')
+    call s:map(1, 'o', 'uP', '<plug>(vimtex-iP)')
     call s:map(1, 'o', 'aP', '<plug>(vimtex-aP)')
-    call s:map(1, 'x', 'im', '<plug>(vimtex-im)')
+    call s:map(1, 'x', 'um', '<plug>(vimtex-im)')
     call s:map(1, 'x', 'am', '<plug>(vimtex-am)')
-    call s:map(1, 'o', 'im', '<plug>(vimtex-im)')
+    call s:map(1, 'o', 'um', '<plug>(vimtex-im)')
     call s:map(1, 'o', 'am', '<plug>(vimtex-am)')
 
     if vimtex#text_obj#targets#enabled()
       call vimtex#text_obj#targets#init()
 
       " These are handled explicitly to avoid conflict with gitgutter
-      call s:map(0, 'x', 'ic', '<plug>(vimtex-targets-i)c')
+      call s:map(0, 'x', 'uc', '<plug>(vimtex-targets-i)c')
       call s:map(0, 'x', 'ac', '<plug>(vimtex-targets-a)c')
-      call s:map(0, 'o', 'ic', '<plug>(vimtex-targets-i)c')
+      call s:map(0, 'o', 'uc', '<plug>(vimtex-targets-i)c')
       call s:map(0, 'o', 'ac', '<plug>(vimtex-targets-a)c')
     else
       if g:vimtex_text_obj_variant ==# 'targets'
@@ -267,13 +267,13 @@ function! s:init_default_mappings() abort " {{{1
       endif
       let g:vimtex_text_obj_variant = 'vimtex'
 
-      call s:map(1, 'x', 'ie', '<plug>(vimtex-ie)')
+      call s:map(1, 'x', 'ue', '<plug>(vimtex-ie)')
       call s:map(1, 'x', 'ae', '<plug>(vimtex-ae)')
-      call s:map(1, 'o', 'ie', '<plug>(vimtex-ie)')
+      call s:map(1, 'o', 'ue', '<plug>(vimtex-ie)')
       call s:map(1, 'o', 'ae', '<plug>(vimtex-ae)')
-      call s:map(0, 'x', 'ic', '<plug>(vimtex-ic)')
+      call s:map(0, 'x', 'uc', '<plug>(vimtex-ic)')
       call s:map(0, 'x', 'ac', '<plug>(vimtex-ac)')
-      call s:map(0, 'o', 'ic', '<plug>(vimtex-ic)')
+      call s:map(0, 'o', 'uc', '<plug>(vimtex-ic)')
       call s:map(0, 'o', 'ac', '<plug>(vimtex-ac)')
     endif
   endif
