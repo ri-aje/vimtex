@@ -4,6 +4,9 @@
 " Email:      karl.yngve@gmail.com
 "
 
+" This script has a lot of unicode characters (for conceals)
+scriptencoding utf-8
+
 function! vimtex#syntax#core#init() abort " {{{1
   syntax spell toplevel
 
@@ -407,8 +410,8 @@ function! vimtex#syntax#core#init() abort " {{{1
   call vimtex#syntax#core#new_arg('texMathArrayArg', {'contains': ''})
 
   call s:match_math_sub_super()
-  call s:match_math_symbols()
   call s:match_math_delims()
+  call s:match_math_symbols()
   call s:match_math_fracs()
 
   " }}}2
@@ -483,7 +486,7 @@ function! vimtex#syntax#core#init_highlights() abort " {{{1
   highlight def link texCmdEnv             texCmd
   highlight def link texCmdE3              texCmd
   highlight def link texCmdFootnote        texCmd
-  highlight def link texCmdGreek           texCmd
+  highlight def link texCmdGreek           texMathCmd
   highlight def link texCmdInput           texCmd
   highlight def link texCmdItem            texCmdEnv
   highlight def link texCmdLet             texCmdNew
@@ -682,6 +685,13 @@ endfunction
 function! s:match_math_sub_super() abort " {{{1
   if !g:vimtex_syntax_conceal.math_super_sub | return | endif
 
+  " This feature does not work unless &encoding = 'utf-8'
+  if &encoding !=# 'utf-8'
+    call vimtex#log#warning(
+          \ "Conceals for math_super_sub require `set encoding='utf-8'`!")
+    return
+  endif
+
   execute 'syntax match texMathSuperSub'
         \ '"\^\%(' . s:re_super . '\)"'
         \ 'conceal contained contains=texMathSuper'
@@ -716,7 +726,7 @@ let s:re_super = '[-+=()<>:;0-9a-pr-zABDEG-PRTUVW]'
 
 let s:map_sub = [
       \ ['\\beta\>',  'ᵦ'],
-      \ ['\\delta\>', 'ᵨ'],
+      \ ['\\rho\>', 'ᵨ'],
       \ ['\\phi\>',   'ᵩ'],
       \ ['\\gamma\>', 'ᵧ'],
       \ ['\\chi\>',   'ᵪ'],
