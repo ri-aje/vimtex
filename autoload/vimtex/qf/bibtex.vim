@@ -1,4 +1,4 @@
-" vimtex - LaTeX plugin for Vim
+" VimTeX - LaTeX plugin for Vim
 "
 " Maintainer: Karl Yngve Lervåg
 " Email:      karl.yngve@gmail.com
@@ -48,7 +48,7 @@ function! s:bibtex.fix_paths() abort " {{{1
   try
     let l:title = getqflist({'title': 1})
   catch /E118/
-    let l:title = 'Vimtex errors'
+    let l:title = 'VimTeX errors'
   endtry
 
   for l:qf in l:qflist
@@ -117,7 +117,7 @@ endfunction
 " }}}1
 
 let s:type_empty = {
-      \ 're' : '\vWarning--empty (.*) in (\S*)',
+      \ 're' : '\vWarning--empty (.*) in ([^ ;]*)(.*)',
       \}
 function! s:type_empty.fix(ctx, entry) abort " {{{1
   let l:matches = matchlist(a:entry.text, self.re)
@@ -125,9 +125,12 @@ function! s:type_empty.fix(ctx, entry) abort " {{{1
 
   let l:type = l:matches[1]
   let l:key = l:matches[2]
+  let l:more = matchstr(l:matches[3], '; \zs.*')
 
   unlet a:entry.bufnr
-  let a:entry.text = printf('Missing "%s" in "%s"', l:type, l:key)
+  let a:entry.text = empty(l:more)
+        \ ? printf('Missing "%s" in "%s"', l:type, l:key)
+        \ : printf('Missing "%s" in "%s" (%s)', l:type, l:key, l:more)
 
   let l:loc = a:ctx.get_key_loc(l:key)
   if !empty(l:loc)

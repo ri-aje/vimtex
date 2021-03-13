@@ -1,4 +1,4 @@
-" vimtex - LaTeX plugin for Vim
+" VimTeX - LaTeX plugin for Vim
 "
 " Maintainer: Karl Yngve Lervåg
 " Email:      karl.yngve@gmail.com
@@ -39,6 +39,10 @@ function! vimtex#syntax#p#amsmath#load(cfg) abort " {{{1
         \})
   call vimtex#syntax#core#new_arg('texDeclmathoperArgBody')
 
+  " \tag{label} or \tag*{label}
+  syntax match texMathCmd "\\tag\>\*\?" contained nextgroup=texMathTagArg
+  call vimtex#syntax#core#new_arg('texMathTagArg')
+
   " Conceal the command and delims of "\operatorname{ ... }"
   if g:vimtex_syntax_conceal.math_delimiters
     syntax region texMathConcealedArg contained matchgroup=texMathCmd
@@ -47,9 +51,9 @@ function! vimtex#syntax#p#amsmath#load(cfg) abort " {{{1
     syntax cluster texClusterMath add=texMathConcealedArg
   endif
 
-  highlight link texCmdDeclmathoper     texCmdNew
-  highlight link texDeclmathoperArgName texArgNew
-  highlight link texMathConcealedArg    texMathTextArg
+  highlight def link texCmdDeclmathoper     texCmdNew
+  highlight def link texDeclmathoperArgName texArgNew
+  highlight def link texMathConcealedArg    texMathTextArg
 endfunction
 
 " }}}1

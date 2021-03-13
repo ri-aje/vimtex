@@ -156,7 +156,7 @@ Folded stuff
 % }}}
 
 Testing markers %<<:
-this fold was NOT recognized by vimtex before issue #1515
+this fold was NOT recognized by VimTeX before issue #1515
 
 %:>>
 
@@ -200,5 +200,18 @@ this fold worked before issue #1515
       asdasd
     \end{proof}
 \end{enumerate}
+
+% The frames need to be in this order for the test to pass. This is likely a
+% bug in vim, see https://github.com/lervag/vimtex/pull/1830#issuecomment-775527621
+\begin{frame}
+  \frametitle{Title}
+  \framesubtitle{Subtitle}
+
+  hello world
+\end{frame}
+
+\begin{frame}[noframenumbering]  % Title page
+  hello world
+\end{frame}
 
 \end{document}

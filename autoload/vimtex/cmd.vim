@@ -1,4 +1,4 @@
-" vimtex - LaTeX plugin for Vim
+" VimTeX - LaTeX plugin for Vim
 "
 " Maintainer: Karl Yngve Lervåg
 " Email:      karl.yngve@gmail.com
@@ -602,6 +602,7 @@ function! s:get_cmd(direction) abort " {{{1
         \ 'pos_start' : { 'lnum' : lnum, 'cnum' : cnum },
         \ 'pos_end' : { 'lnum' : lnum, 'cnum' : cnum + strlen(match) - 1 },
         \ 'args' : [],
+        \ 'opts' : [],
         \}
 
   " Environments always start with environment name and allows option
@@ -623,11 +624,13 @@ function! s:get_cmd(direction) abort " {{{1
   endif
 
   " Get options
-  let res.opt = s:get_cmd_part('[', res.pos_end)
-  if !empty(res.opt)
-    let res.pos_end.lnum = res.opt.close.lnum
-    let res.pos_end.cnum = res.opt.close.cnum
-  endif
+  let opt = s:get_cmd_part('[', res.pos_end)
+  while !empty(opt)
+    call add(res.opts, opt)
+    let res.pos_end.lnum = opt.close.lnum
+    let res.pos_end.cnum = opt.close.cnum
+    let opt = s:get_cmd_part('[', res.pos_end)
+  endwhile
 
   " Get arguments
   let arg = s:get_cmd_part('{', res.pos_end)
@@ -646,8 +649,10 @@ endfunction
 
 " }}}1
 function! s:get_cmd_name(next) abort " {{{1
-  let [l:lnum, l:cnum] = searchpos('\v\\\a+\*?', a:next ? 'nW' : 'cbnW')
-  let l:match = matchstr(getline(l:lnum), '^\v\\\a*\*?', l:cnum-1)
+  let [l:lnum, l:cnum] = searchpos(
+        \ '\v\\%(\a+\*?|[,:;!])',
+        \ a:next ? 'nW' : 'cbnW')
+  let l:match = matchstr(getline(l:lnum), '^\v\\%([,:;!]|\a*\*?)', l:cnum-1)
   return [l:lnum, l:cnum, l:match]
 endfunction
 

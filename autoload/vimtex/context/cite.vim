@@ -1,4 +1,4 @@
-" vimtex - LaTeX plugin for Vim
+" VimTeX - LaTeX plugin for Vim
 "
 " Maintainer: Karl Yngve Lervåg
 " Email:      karl.yngve@gmail.com
@@ -39,10 +39,13 @@ endfunction
 
 " }}}1
 function! s:handler.get_actions() abort dict " {{{1
+  " Ensure we're at the root directory when locating bib files
+  call vimtex#paths#pushd(b:vimtex.root)
   let l:entries = []
   for l:file in vimtex#bib#files()
     let l:entries += vimtex#parser#bib(l:file, {'backend': 'vim'})
   endfor
+  call vimtex#paths#popd()
 
   let l:entry = get(
         \ filter(copy(l:entries), {_, x -> x.key ==# self.selected}), 0, {})
@@ -76,7 +79,7 @@ function! s:actions.create(entry) abort dict " {{{1
     let l:pdfs = filter(split(a:entry.file, ';'),
           \ {_, x -> fnamemodify(x, ':e') ==? 'pdf'})
     if !empty(l:pdfs)
-      let l:new.pdfs = l:pdfs
+      let l:new.pdfs = map(l:pdfs, {_, x -> expand(x)})
       call add(l:new.menu, {'name': 'Open PDF', 'func': 'open_pdf'})
     endif
   endif
